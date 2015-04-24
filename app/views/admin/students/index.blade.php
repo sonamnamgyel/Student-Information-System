@@ -26,7 +26,7 @@
 					<th class="col-md-1">{{{ Lang::get('admin/students/table.slno') }}}</th>
 					<th class="col-md-1">{{{ Lang::get('admin/students/table.stdno') }}}</th>
 					<th class="col-md-2">{{{ Lang::get('admin/students/table.name') }}}</th>
-					<th class="col-md-1">{{{ Lang::get('admin/students/table.sex') }}}</th>
+					<th class="col-md-1">{{{ Lang::get('admin/students/table.gender') }}}</th>
 					<th class="col-md-1">{{{ Lang::get('admin/students/table.stdtype') }}}</th>
 					<th class="col-md-1">{{{ Lang::get('admin/students/table.sem') }}}</th>
 					<th class="col-md-1">{{{ Lang::get('admin/students/table.programme') }}}</th>

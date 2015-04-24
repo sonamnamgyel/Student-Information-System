@@ -25,12 +25,12 @@
 				</div>
 				<!-- ./ department -->
 
-				<!-- sex -->
-				<label class="col-md-2 control-label" for="sex">Sex</label>
+				<!-- gender -->
+				<label class="col-md-2 control-label" for="gender">Sex</label>
 				<div class="col-md-3">
-					{{ Form::select('sex', array(0=>' -- ','Male'=>'Male','Female'=>'Female'),$data['sex'], array('class'=>'form-control select2')) }}
+					{{ Form::select('gender', array(0=>' -- ','Male'=>'Male','Female'=>'Female'),$data['gender'], array('class'=>'form-control select2')) }}
 				</div>
-				<!-- ./ sex -->
+				<!-- ./ gender -->
 			</div>
 
 			<div class="form-group">
@@ -121,7 +121,7 @@
 					<th class="col-md-1">{{{ Lang::get('admin/students/table.slno') }}}</th>
 					<th class="col-md-1">{{{ Lang::get('admin/students/table.stdno') }}}</th>
 					<th class="col-md-2">{{{ Lang::get('admin/students/table.name') }}}</th>
-					<th class="col-md-1">{{{ Lang::get('admin/students/table.sex') }}}</th>
+					<th class="col-md-1">{{{ Lang::get('admin/students/table.gender') }}}</th>
 					<th class="col-md-1">{{{ Lang::get('admin/students/table.stdtype') }}}</th>
 					<th class="col-md-1">{{{ Lang::get('admin/students/table.sem') }}}</th>
 					<th class="col-md-1">{{{ Lang::get('admin/students/table.programme') }}}</th>

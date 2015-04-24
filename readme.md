@@ -1,4 +1,4 @@
-#Laravel 4 Bootstrap Admin Starter Template [with Oracle DB Support]
+# Laravel 4.2 Student Information System is based on project -Laravel 4 Bootstrap Admin Starter Template [with Oracle DB Support]
 
 Laravel 4 Bootstrap Admin Starter Template is a sample application for beginning development with Laravel 4.
 
@@ -260,4 +260,4 @@ This is free software distributed under the terms of the MIT license
 
 Inspired by and based on [Laravel-4-Bootstrap-Starter-Site](https://github.com/andrewelkins/Laravel-4-Bootstrap-Starter-Site)
 
-Any questions, feel free to [contact me](mailto:aqangeles@gmail.com).
+Any questions, feel free to [contact me](mailto:sonamnamgyel@gmail.com).

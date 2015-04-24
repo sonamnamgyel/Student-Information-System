@@ -5,7 +5,7 @@ return array(
 	'slno' => 'Sl No',
 	'stdno' => 'Std No',
 	'name' => 'Name',
-	'sex' => 'Sex',
+	'gender' => 'Gender',
 	'stdtype' => 'Type',
 	'sem' => 'Semester',
 	'email' => 'Email',

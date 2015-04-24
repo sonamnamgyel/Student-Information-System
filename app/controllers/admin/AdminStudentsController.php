@@ -80,7 +80,7 @@ class AdminStudentsController extends AdminController {
             'mname' => 'alpha',
             'lname' => 'required|alpha|min:4',
             'cidno' => 'required|digits:11|unique:students,cidno',
-            'sex' => 'required|in:Male,Female',
+            'gender' => 'required|in:Male,Female',
             'dob' => 'required',
             'stdtype' => 'required',
             'current_semester' => 'required',
@@ -121,7 +121,7 @@ class AdminStudentsController extends AdminController {
                 $this->student->mname = null;
             $this->student->lname = Input::get('lname');
             $this->student->cidno = Input::get('cidno');
-            $this->student->sex = Input::get('sex');
+            $this->student->gender = Input::get('gender');
             $this->student->dob = Input::get('dob');
             $this->student->stdtype = Input::get('stdtype');
             $this->student->current_semester = Input::get('current_semester');
@@ -291,7 +291,7 @@ class AdminStudentsController extends AdminController {
             'mname' => 'alpha',
             'lname' => 'required|alpha|min:4',
             'cidno' => 'required|digits:11|unique:students,cidno,'.$student->id,
-            'sex' => 'required|in:Male,Female',
+            'gender' => 'required|in:Male,Female',
             'dob' => 'required',
             'stdtype' => 'required',
             'current_semester' => 'required',
@@ -330,7 +330,7 @@ class AdminStudentsController extends AdminController {
             }
             $student->lname = Input::get('lname');
             $student->cidno = Input::get('cidno');
-            $student->sex = Input::get('sex');
+            $student->gender = Input::get('gender');
             $student->dob = Input::get('dob');
             $student->stdtype = Input::get('stdtype');
             $student->current_semester = Input::get('current_semester');
@@ -476,7 +476,7 @@ class AdminStudentsController extends AdminController {
         $students = Student::leftJoin('programmes','students.programme_id', '=', 'programmes.id')
             ->leftJoin('semesters', 'students.current_semester', '=', 'semesters.number')
             ->select(array('students.id','students.stdno',DB::raw('CONCAT_WS(\' \',students.fname,students.mname, students.lname) as name'),
-            'students.sex', 'students.stdtype', 'semesters.roman', 'programmes.programme_code', 'students.registered', 'students.id as actions'))
+            'students.gender', 'students.stdtype', 'semesters.roman', 'programmes.programme_code', 'students.registered', 'students.id as actions'))
             ->orderBy('students.programme_id')
             ->orderBy('students.current_semester','desc')
             ->orderBy('students.fname');
@@ -539,7 +539,7 @@ class AdminStudentsController extends AdminController {
         $data['programme'] = Input::get('programme');
         $data['stdtype'] = Input::get('stdtype');
         $data['semester'] = Input::get('semester');
-        $data['sex'] = Input::get('sex');
+        $data['gender'] = Input::get('gender');
         $data['registered'] = Input::get('registered');
         $data['school'] = Input::get('school');
         $data['dzongkhag'] = Input::get('dzongkhag');
@@ -553,18 +553,18 @@ class AdminStudentsController extends AdminController {
      *
      * @return Datatables JSON
      */
-    public function getDetails($dep=null, $prog=null, $type=null, $sem=null, $sex=null, $reg=null, $school=null, $dzongkhag=null, $fee_paid=null)
+    public function getDetails($dep=null, $prog=null, $type=null, $sem=null, $gender=null, $reg=null, $school=null, $dzongkhag=null, $fee_paid=null)
     {
         $searchResults = Student::leftJoin('programmes','students.programme_id','=','programmes.id')
             ->leftJoin('semesters', 'students.current_semester', '=', 'semesters.number')
             ->leftJoin('departments', 'programmes.department_id','=', 'departments.id')
             ->leftJoin('fees', 'students.id', '=', 'fees.student_id')
             ->select(array('students.id','students.stdno',DB::raw('CONCAT_WS(\' \',students.fname,students.mname, students.lname) as name'),
-                'students.sex', 'students.stdtype', 'semesters.roman', 'programmes.programme_code', 'students.registered', 'students.id as actions'))
+                'students.gender', 'students.stdtype', 'semesters.roman', 'programmes.programme_code', 'students.registered', 'students.id as actions'))
             ->orderBy('students.programme_id')
             ->orderBy('students.current_semester','desc')
             ->orderBy('students.fname')
-            ->where(function($query) use ($dep, $prog, $type, $sem, $sex, $reg, $school, $dzongkhag, $fee_paid) {
+            ->where(function($query) use ($dep, $prog, $type, $sem, $gender, $reg, $school, $dzongkhag, $fee_paid) {
                 if($dep)
                     $query->where('departments.id', $dep);
 
@@ -577,8 +577,8 @@ class AdminStudentsController extends AdminController {
                 if($sem)
                     $query->where('students.current_semester', $sem);
 
-                if($sex)
-                    $query->where('students.sex', $sex);
+                if($gender)
+                    $query->where('students.gender', $gender);
 
                 if($reg=='No'){
                     $query->where(function($query2) use ($reg) {
