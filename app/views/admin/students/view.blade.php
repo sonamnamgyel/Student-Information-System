@@ -6,6 +6,7 @@
 <ul class="nav nav-tabs">
 	<li class="active"><a href="#tab-general" data-toggle="tab">General</a></li>
     <li><a href="#tab-course" data-toggle="tab">Courses</a></li>
+    <li><a href="#tab-fee" data-toggle="tab">Fees</a></li>
 	<li><a href="#tab-remark" data-toggle="tab">Remarks</a></li>
 </ul>
 <!-- ./ tabs -->
@@ -32,8 +33,8 @@
                     <td>{{ $student->cidno }}</td>
                 </tr>
                 <tr>
-                    <th>Sex</th>
-                    <td>{{ $student->sex }}</td>
+                    <th>Gender</th>
+                    <td>{{ $student->gender }}</td>
                 </tr>
                 <tr>
                     <th>Date of Birth</th>
@@ -80,8 +81,24 @@
                     <td>{{ $student->schoolName($student->school_id) }}</td>
                 </tr>
                 <tr>
+                    <th>Resident Type</th>
+                    <td>{{ $student->resident }}</td>
+                </tr>
+                <tr>
                     <th>Room Number</th>
                     <td>{{ $student->roomno }}</td>
+                </tr>
+                <tr>
+                    <th>Parent's Name</th>
+                    <td>{{ $student->parent_name }}</td>
+                </tr>
+                <tr>
+                    <th>Parent's Occupation</th>
+                    <td>{{ $student->parent_occupation }}</td>
+                </tr>
+                <tr>
+                    <th>Parent's Contact No.</th>
+                    <td>{{ $student->parent_contactno }}</td>
                 </tr>
                 <tr>
                     <th>Enrolled on</th>
@@ -113,7 +130,7 @@
                     <thead>
                         <tr>
                             <th class="col-md-1">Semester</th>
-                            <th><span class="col-md-4">Courses Subscribed</span><span>Type</span></th>
+                            <th><span class="col-md-5">Courses Subscribed</span><span>Type</span></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -123,7 +140,7 @@
                             <td>
                                 <ol>
                                 @foreach( $student->getCoursesBySemester($semester->semester_taken, $student) as $course) 
-                                    <span class="col-md-4"><li>{{ $course->module_code." - ".$course->module_name }}</li> </span>
+                                    <span class="col-md-5"><li>{{ $course->module_code." - ".$course->module_name }}</li> </span>
                                         @if($course->type=='Superback') <span class="label label-danger">
                                         @elseif($course->type=='Back')<span class="label label-warning"> 
                                         @else <span class="label label-info"> @endif
@@ -170,6 +187,33 @@
             <!-- Remarks column -->
         </div>
     <!-- ./ Remarks tab -->
+
+    <!-- Fees tab -->
+        <div class="tab-pane" id="tab-fee">
+            <!-- Fees column -->
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover table-striped">
+                    <tr>
+                        <th class="col-md-2">Fees Paid?</th>
+                        <td>{{ $fee->paid }}</td>
+                    </tr>                    
+                    <tr>
+                        <th>Receipt Number</th>
+                        <td>{{ $fee->receipt_no }}</td>
+                    </tr>                    
+                    <tr>
+                        <th>Amount</th>
+                        <td>{{ $fee->amount }}</td>
+                    </tr>                    
+                    <tr>
+                        <th>Last Update</th>
+                        <td>{{ $fee->updated_at }}</td>
+                    </tr>
+                </table>
+            </div>
+            <!-- Fees column -->
+        </div>
+    <!-- ./ Fees tab -->
 </div>
 <!-- ./ tabs content -->
 

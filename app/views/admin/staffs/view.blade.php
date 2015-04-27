@@ -29,8 +29,8 @@
                     <td>{{ $staff->position }}</td>
                 </tr>
                 <tr>
-                    <th>Sex</th>
-                    <td>{{ $staff->sex }}</td>
+                    <th>Gender</th>
+                    <td>{{ $staff->gender }}</td>
                 </tr>
                 <tr>
                     <th>CID Number</th>

@@ -11,4 +11,5 @@ return array(
 	'edit'   => 'Edit',
 	'delete' => 'Delete',
 	'back' => 'Back',
+	'fee-payment' => 'Fee Payment',
 );

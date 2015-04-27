@@ -39,7 +39,7 @@
 					<th class="col-md-1">{{{ Lang::get('admin/staffs/table.staff_id') }}}</th>
 					<th class="col-md-1">{{{ Lang::get('admin/staffs/table.position') }}}</th>
 					<th class="col-md-2">{{{ Lang::get('admin/staffs/table.name') }}}</th>
-					<th class="col-md-1">{{{ Lang::get('admin/staffs/table.sex') }}}</th>
+					<th class="col-md-1">{{{ Lang::get('admin/staffs/table.gender') }}}</th>
 					<th class="col-md-2">{{{ Lang::get('admin/staffs/table.department') }}}</th>
 					<th class="col-md-1">{{{ Lang::get('admin/staffs/table.course_no') }}}</th>
 					<th class="col-md-2">{{{ Lang::get('table.actions') }}}</th>

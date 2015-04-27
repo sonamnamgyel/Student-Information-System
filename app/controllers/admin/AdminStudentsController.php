@@ -74,6 +74,10 @@ class AdminStudentsController extends AdminController {
      */
     public function postAdd()
     {
+        Validator::extend('alpha_spaces', function($attribute, $value)
+        {
+            return preg_match('/^[\pL\s]+$/u', $value);
+        });
         $rules = array(
             'stdno' => 'required|min:7|unique:students,stdno',
             'fname' => 'required|alpha|min:4',
@@ -90,9 +94,13 @@ class AdminStudentsController extends AdminController {
             'dzongkhag_id' => 'required',
             'phone' => 'required|digits:8',
             'school_id' => 'required',
-            'roomno' => 'required',
+            'resident' => 'required',
+            'roomno' => 'required_if:resident,"Boarder"',
+            'parent_name' => 'required|alpha_spaces|min:4',
+            'parent_occupation' => 'required',
+            'parent_contactno' => 'required|digits:8',
+            'enrolled' => 'required',
             'registered' =>'required|in:Yes,No',
-            'enrolled' => 'required'
         );
         
         $customMessages = array(
@@ -101,7 +109,8 @@ class AdminStudentsController extends AdminController {
            'dzongkhag_id.required' => 'The dzongkhag field is required.',
            'school_id.required' => 'The previous school field is required.',
            'dob.required' => 'The date of birth field is required.',
-           'bloodgroup.required' => 'The blood group field is required'
+           'bloodgroup.required' => 'The blood group field is required',
+           'alpha_spaces' => 'The :attribute may only contain letters.',
         );
         // Validate the inputs
         $validator = Validator::make(Input::all(), $rules, $customMessages);
@@ -131,7 +140,17 @@ class AdminStudentsController extends AdminController {
             $this->student->dzongkhag_id = Input::get('dzongkhag_id');
             $this->student->phone = Input::get('phone');
             $this->student->school_id = Input::get('school_id');
-            $this->student->roomno = Input::get('roomno');
+
+            $this->student->resident = Input::get('resident');
+            if(Input::get('resident') =='Boarder') {
+                $this->student->roomno = Input::get('roomno');
+            }else {
+                $this->student->roomno = null;
+            }
+            $this->student->parent_name = Input::get('parent_name');
+            $this->student->parent_occupation = Input::get('parent_occupation');
+            $this->student->parent_contactno = Input::get('parent_contactno');
+
             $this->student->enrolled = Input::get('enrolled');
 
             
@@ -215,6 +234,8 @@ class AdminStudentsController extends AdminController {
                 $department_name = "--";
             }
 
+            $fee = Account::firstOrNew(['student_id'=>$student->id]);
+
             $semesters = DB::table('course_student')
                             ->leftJoin('course_programme','course_student.course_programme_id', '=', 'course_programme.pivot_id')
                             ->select('course_programme.semester_taken')
@@ -223,7 +244,7 @@ class AdminStudentsController extends AdminController {
                             ->orderBy('semester_taken', 'desc')
                             ->get();
 
-            return View::make('admin/students/view', compact('student', 'title', 'mode', 'programme_name', 'department_name', 'semesters'));
+            return View::make('admin/students/view', compact('student', 'title', 'mode', 'programme_name', 'department_name', 'semesters', 'fee'));
         }
         else
         {
@@ -285,6 +306,10 @@ class AdminStudentsController extends AdminController {
     
     public function postEdit($student)
     {
+        Validator::extend('alpha_spaces', function($attribute, $value)
+        {
+            return preg_match('/^[\pL\s]+$/u', $value);
+        });
         $rules = array(
             'stdno' => 'required|min:7|unique:students,stdno,'.$student->id,
             'fname' => 'required|alpha|min:4',
@@ -302,7 +327,11 @@ class AdminStudentsController extends AdminController {
             'dzongkhag_id' => 'required',
             'phone' => 'required|digits:8',
             'school_id' => 'required',
-            'roomno' => 'required',
+            'resident' => 'required',
+            'roomno' => 'required_if:resident,"Boarder"',
+            'parent_name' => 'required|alpha_spaces|min:4',
+            'parent_occupation' => 'required',
+            'parent_contactno' => 'required|digits:8',
             'registered' =>'required|in:Yes,No',
             'enrolled' => 'required'
         );
@@ -312,6 +341,7 @@ class AdminStudentsController extends AdminController {
            'school_id.required' => 'The previous school field is required.',
            'dzongkhag_id.required' => 'The dzongkhag field is required.',
            'bloodgroup.required' => 'The Blood group field is required.',
+           'alpha_spaces' => 'The :attribute may only contain letters.',
         );
         // Validate the inputs
         $validator = Validator::make(Input::all(), $rules, $customMessages);
@@ -340,7 +370,15 @@ class AdminStudentsController extends AdminController {
             $student->dzongkhag_id = Input::get('dzongkhag_id');
             $student->phone = Input::get('phone');
             $student->school_id = Input::get('school_id');
-            $student->roomno = Input::get('roomno');
+            $student->resident = Input::get('resident');
+            if(Input::get('resident') =='Boarder') {
+                $student->roomno = Input::get('roomno');
+            }else {
+                $student->roomno = null;
+            }
+            $student->parent_name = Input::get('parent_name');
+            $student->parent_occupation = Input::get('parent_occupation');
+            $student->parent_contactno = Input::get('parent_contactno');
             $student->enrolled = Input::get('enrolled');
             $student->registered = Input::get('registered');
 
@@ -406,7 +444,6 @@ class AdminStudentsController extends AdminController {
                         }
                     }
                 }
-                
                 
                 // Finally commit if it reaches here without error
                 DB::commit();
@@ -543,7 +580,9 @@ class AdminStudentsController extends AdminController {
         $data['registered'] = Input::get('registered');
         $data['school'] = Input::get('school');
         $data['dzongkhag'] = Input::get('dzongkhag');
+        $data['resident'] = Input::get('resident');
         $data['fee'] = Input::get('fee');
+        $data['repeat'] = Input::get('repeat');
         // Show the page with list of all students
         return View::make('admin/students/search', compact('title','student', 'departments', 'programmes','schools','dzongkhags', 'data'));
     }
@@ -553,18 +592,21 @@ class AdminStudentsController extends AdminController {
      *
      * @return Datatables JSON
      */
-    public function getDetails($dep=null, $prog=null, $type=null, $sem=null, $gender=null, $reg=null, $school=null, $dzongkhag=null, $fee_paid=null)
+    public function getDetails($dep=null, $prog=null, $type=null, $sem=null, $gender=null, $regis=null, $school=null,
+     $dzongkhag=null, $resident=null, $fee_paid=null, $repeat=null)
     {
         $searchResults = Student::leftJoin('programmes','students.programme_id','=','programmes.id')
             ->leftJoin('semesters', 'students.current_semester', '=', 'semesters.number')
             ->leftJoin('departments', 'programmes.department_id','=', 'departments.id')
             ->leftJoin('fees', 'students.id', '=', 'fees.student_id')
+            ->leftJoin('course_student', 'students.id', '=', 'course_student.student_id')
             ->select(array('students.id','students.stdno',DB::raw('CONCAT_WS(\' \',students.fname,students.mname, students.lname) as name'),
-                'students.gender', 'students.stdtype', 'semesters.roman', 'programmes.programme_code', 'students.registered', 'students.id as actions'))
+                'students.gender', 'students.stdtype', 'semesters.roman', 'programmes.programme_code','students.id as courses', 'students.registered','students.id as actions'))
+            ->groupBy('students.id')
             ->orderBy('students.programme_id')
             ->orderBy('students.current_semester','desc')
             ->orderBy('students.fname')
-            ->where(function($query) use ($dep, $prog, $type, $sem, $gender, $reg, $school, $dzongkhag, $fee_paid) {
+            ->where(function($query) use ($dep, $prog, $type, $sem, $gender, $regis, $school, $dzongkhag,$resident, $fee_paid, $repeat) {
                 if($dep)
                     $query->where('departments.id', $dep);
 
@@ -580,15 +622,14 @@ class AdminStudentsController extends AdminController {
                 if($gender)
                     $query->where('students.gender', $gender);
 
-                if($reg=='No'){
-                    $query->where(function($query2) use ($reg) {
+                if($regis=='No'){
+                    $query->where(function($query2) use ($regis) {
                         $query2->where('registered', 'No')
                             ->orWhere('registered', '')
                             ->orWhereNull('registered');
                    });
                 }
-
-                if($reg=='Yes')
+                if($regis=='Yes')
                     $query->where('students.registered', 'Yes');
                 
                 if($school)
@@ -604,15 +645,52 @@ class AdminStudentsController extends AdminController {
                             ->orWhereNull('fees.paid');
                    });
                 }
-
                 if($fee_paid=='Yes')
                     $query->where('fees.paid', 'Yes');
+
+                if($resident)
+                    $query->where('students.resident', $resident);
+
+                if($repeat){
+                    if($repeat == 'both'){
+                        $query->where(function($query2) use ($repeat) {
+                            $query2->where('course_student.type', 'Back')
+                                    ->orWhere('course_student.type', 'Superback');
+                        });
+                    }else {
+                        $query->where('course_student.type', $repeat);
+                    }
+                }
 
             });
 
         return Datatables::of($searchResults)
+            ->edit_column('courses',function($row){
+                $courses = CourseStudent::select('type')->where('student_id', $row->id)->get();
+                $back=0;
+                $superback=0;
+                $regular=0;
+                foreach($courses as $course){
+                    if($course->type == 'Back'){
+                        $back =$back+1;
+                    }elseif($course->type == 'Superback'){
+                        $superback = $superback+1;
+                    }elseif ($course->type == 'Regular') {
+                        $regular = $regular+1;
+                    }
+                }
+                $result1=null; $result2=null; $result3=null;
+                if($regular>0)
+                    $result1="<span class='label label-info'>Regular - ".$regular."</span>";
+                if($back>0)
+                    $result2="<br><span class='label label-warning'>Back - ".$back."</span>";
+                if($superback>0)
+                    $result3="<br><span class='label label-danger'>Superback - ".$superback."</span>";
+
+                return $result1.$result2.$result3;
+            })
             ->edit_column('registered','@if($registered=="No")
-                                        <span class="label label-danger">No</span>
+                                        <span class="label label-success">No</span>
                                     @elseif($registered=="Yes")
                                         Yes
                                     @endif')

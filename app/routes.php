@@ -138,18 +138,14 @@ Route::group(array('prefix' => 'admin', 'before' => 'auth'), function()
     Route::post('students/{student}/edit', 'AdminStudentsController@postEdit');
     Route::get('students/{student}/delete', 'AdminStudentsController@getDelete');
     Route::post('students/{student}/delete', 'AdminStudentsController@postDelete');
-    Route::get('students/details/{dep?}/{prog?}/{type?}/{sem?}/{sex?}/{reg?}/{school?}/{dzo?}/{fee?}', 'AdminStudentsController@getDetails');
+    Route::get('students/details/{dep?}/{prog?}/{type?}/{sem?}/{gender?}/{regis?}/{school?}/{dzo?}/{scholar_type?}/{fee?}/{repeat?}', 'AdminStudentsController@getDetails');
     Route::get('students/add', 'AdminStudentsController@getAdd');
     Route::controller('students', 'AdminStudentsController');
 
-    // # Accounts Section
-    // Route::get('accounts/{student}/edit', 'AdminAccountsController@getEdit');
-    // Route::post('accounts/{student}/edit', 'AdminAccountsController@postEdit');
-    // Route::get('accounts/{student}/delete', 'AdminAccountsController@getDelete');
-    // Route::post('accounts/{student}/delete', 'AdminAccountsController@postDelete');
-    // Route::get('accounts/details/{dep?}/{prog?}/{type?}/{sem?}/{sex?}/{reg?}/{school?}/{dzo?}/{fee?}', 'AdminAccountsController@getDetails');
-    // Route::get('accounts/add', 'AdminAccountsController@getAdd');
-    // Route::get('accounts/search', 'AdminAccountsController@getSearch');
+    # Accounts Section
+    Route::get('accounts/{student}/fee', 'AdminAccountsController@getFee');
+    Route::post('accounts/{student}/fee', 'AdminAccountsController@postFee');
+    Route::get('accounts/data/{dep?}/{prog?}/{type?}/{resident?}/{sem?}/{repeat?}/{fee?}/{regis?}', 'AdminAccountsController@getData');
     Route::controller('accounts', 'AdminAccountsController');
 
     

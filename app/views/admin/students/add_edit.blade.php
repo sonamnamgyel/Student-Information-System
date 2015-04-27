@@ -69,16 +69,16 @@
 		</div>
 		<!-- ./ cidno -->
 		
-		<!-- sex -->
-		<div class="form-group {{ $errors->has('sex') ? 'has-error' : '' }}">
-			<label class="col-md-3 control-label" for="sex">Sex</label>
+		<!-- gender -->
+		<div class="form-group {{ $errors->has('gender') ? 'has-error' : '' }}">
+			<label class="col-md-3 control-label" for="gender">Gender</label>
 			<div class="col-md-7">
-				{{ Form::radio('sex', 'Male', (Input::old('sex')== 'Male')) }} Male <br>
-				{{ Form::radio('sex', 'Female', (Input::old('sex')== 'Female')) }} Female
-				{{ $errors->first('sex', '<span class="help-block">:message</span>') }}
+				{{ Form::radio('gender', 'Male', (Input::old('gender')== 'Male')) }} Male <br>
+				{{ Form::radio('gender', 'Female', (Input::old('gender')== 'Female')) }} Female
+				{{ $errors->first('gender', '<span class="help-block">:message</span>') }}
 			</div>
 		</div>
-		<!-- ./ sex -->
+		<!-- ./ gender -->
 
 		<!-- dob -->
 		<div class="form-group {{ $errors->has('dob') ? 'has-error' : '' }}">
@@ -195,6 +195,17 @@
 			</div>
 		</div>
 		<!-- ./ previous school -->
+		
+		<!-- resident type -->
+		<div class="form-group {{ $errors->has('resident') ? 'has-error' : '' }}">
+			<label class="col-md-3 control-label" for="resident">Resident Type</label>
+			<div class="col-md-7">
+				{{ Form::radio('resident', 'Boarder', (Input::old('resident')== 'Boarder')) }} Boarder <br>
+				{{ Form::radio('resident', 'Day-Scholar', (Input::old('resident')== 'Day-Scholar')) }} Day-Scholar
+				{{ $errors->first('resident', '<span class="help-block">:message</span>') }}
+			</div>
+		</div>
+		<!-- ./ resident type -->
 
 		<!-- room number -->
 		<div class="form-group {{ $errors->has('roomno') ? 'has-error' : '' }}">
@@ -205,6 +216,36 @@
 			</div>
 		</div>
 		<!-- ./ room number -->
+
+		<!-- parent's name -->
+		<div class="form-group {{ $errors->has('parent_name') ? 'has-error' : '' }}">
+			<label class="col-md-3 control-label" for="parent_name">Parent's Name</label>
+			<div class="col-md-7">
+				{{ Form::input('text', 'parent_name', null, ['id'=>'parent_name','class'=>'form-control']) }}
+				{{ $errors->first('parent_name', '<span class="help-block">:message</span>') }}
+			</div>
+		</div>
+		<!-- ./ parent's name -->
+
+		<!-- parent's occupation -->
+		<div class="form-group {{ $errors->has('parent_occupation') ? 'has-error' : '' }}">
+			<label class="col-md-3 control-label" for="parent_occupation">Parent's Occupation </label>
+			<div class="col-md-7">
+				{{ Form::input('text', 'parent_occupation', null, ['id'=>'parent_occupation','class'=>'form-control']) }}
+				{{ $errors->first('parent_occupation', '<span class="help-block">:message</span>') }}
+			</div>
+		</div>
+		<!-- ./ parent's occupation -->
+
+		<!-- parent contact number -->
+		<div class="form-group {{ $errors->has('parent_contactno') ? 'has-error' : '' }}">
+			<label class="col-md-3 control-label" for="parent_contactno">Parent's Contact No. </label>
+			<div class="col-md-7">
+				{{ Form::input('text', 'parent_contactno', null, ['id'=>'parent_contactno','class'=>'form-control']) }}
+				{{ $errors->first('parent_contactno', '<span class="help-block">:message</span>') }}
+			</div>
+		</div>
+		<!-- ./ parent contact number -->
 
 		<!-- date enrolled -->
 		<div class="form-group {{ $errors->has('enrolled') ? 'has-error' : '' }}">

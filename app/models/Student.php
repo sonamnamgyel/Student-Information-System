@@ -14,6 +14,10 @@ class Student extends \Eloquent {
 		return $this->belongsToMany('CourseProgramme', 'course_student');
 	}
 
+    public function coursestudents(){
+        return $this->hasMany('CourseStudent');
+    }
+
     public function remarks(){
         return $this->hasMany('Remark');
     }
@@ -43,7 +47,7 @@ class Student extends \Eloquent {
     			->leftJoin('courses', 'course_programme.course_id', '=', 'courses.id')
                 ->select('courses.module_code', 'courses.module_name', 'course_student.type', 'course_programme.programme_id')
     			->where('course_student.student_id', $student->id)
-    			->where('course_programme.programme_id', $student->programme_id)
+    			//->where('course_programme.programme_id', $student->programme_id)
     			->where('course_programme.semester_taken', $semester)
                 ->orderBy('courses.module_code')
     			->get();

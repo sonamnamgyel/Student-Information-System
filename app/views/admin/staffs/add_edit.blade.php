@@ -55,16 +55,16 @@
 		</div>
 		<!-- ./ position -->
 		
-		<!-- sex -->
-		<div class="form-group {{  $errors->has('sex') ? 'has-error' : '' }}">
-			<label class="col-md-3 control-label" for="sex">Sex</label>
+		<!-- gender -->
+		<div class="form-group {{  $errors->has('gender') ? 'has-error' : '' }}">
+			<label class="col-md-3 control-label" for="gender">Gender</label>
 			<div class="col-md-7">
-				{{ Form::radio('sex', 'Male', (Input::old('sex')== 'Male')) }} Male <br>
-				{{ Form::radio('sex', 'Female', (Input::old('sex')== 'Female')) }} Female
-				{{ $errors->first('sex', '<span class="help-block">:message</span>') }}
+				{{ Form::radio('gender', 'Male', (Input::old('gender')== 'Male')) }} Male <br>
+				{{ Form::radio('gender', 'Female', (Input::old('gender')== 'Female')) }} Female
+				{{ $errors->first('gender', '<span class="help-block">:message</span>') }}
 			</div>
 		</div>
-		<!-- ./ sex -->
+		<!-- ./ gender -->
 
 		<!-- cidno -->
 		<div class="form-group {{  $errors->has('cidno') ? 'has-error' : '' }}">

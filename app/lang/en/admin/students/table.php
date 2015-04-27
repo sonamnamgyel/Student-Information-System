@@ -10,6 +10,7 @@ return array(
 	'sem' => 'Semester',
 	'email' => 'Email',
 	'programme' => 'Programme',
+	'course' => 'Courses',
 	'registered' => 'Registered',
 	'enrolled' => 'Date Enrolled'
 );

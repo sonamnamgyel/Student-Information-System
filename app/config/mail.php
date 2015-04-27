@@ -54,7 +54,6 @@ return array(
 	|
 	*/
 
-	//'from' => array('address' => sonamnamgyel.gmail.com, 'name' => Sonam Namgyel),
 	'from' => array('address' => null, 'name' => null),
 
 	/*

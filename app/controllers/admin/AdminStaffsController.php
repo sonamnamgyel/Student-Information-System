@@ -90,19 +90,24 @@ class AdminStaffsController extends AdminController {
      */
     public function postAdd()
     {
+        Validator::extend('alpha_spaces', function($attribute, $value)
+        {
+            return preg_match('/^[\pL\s]+$/u', $value);
+        });
         $rules = array(
             'staff_id' => 'required|unique:staffs,staff_id',
             'title' => 'required',
-            'name' => 'required|min:4',
+            'name' => 'required|alpha_spaces|min:4',
             'position' => 'required',
-            'sex' => 'required|in:Male,Female',
+            'gender' => 'required|in:Male,Female',
             'cidno' => 'required|digits:11|unique:staffs,cidno',
             'phone' => 'digits:8',
             'fax' => 'digits:8'
         );
 
         $customMessages = array(
-           'cidno.required' => 'The CID Number field is required.'
+           'cidno.required' => 'The CID Number field is required.',
+           'alpha_spaces' => 'The :attribute may only contain letters.',
         );
         // Validate the inputs
         $validator = Validator::make(Input::all(), $rules, $customMessages);
@@ -116,7 +121,7 @@ class AdminStaffsController extends AdminController {
             $this->staff->title = Input::get('title');
             $this->staff->name = Input::get('name');
             $this->staff->position = Input::get('position');
-            $this->staff->sex = Input::get('sex');
+            $this->staff->gender = Input::get('gender');
             $this->staff->cidno = Input::get('cidno');
 
             $department_id = Input::get('department_id');
@@ -212,19 +217,24 @@ class AdminStaffsController extends AdminController {
     
     public function postEdit($staff)
     {
+        Validator::extend('alpha_spaces', function($attribute, $value)
+        {
+            return preg_match('/^[\pL\s]+$/u', $value);
+        });
         $rules = array(
             'staff_id' => 'required|unique:staffs,staff_id,'.$staff->id,
             'title' => 'required',
-            'name' => 'required|min:4',
+            'name' => 'required|alpha_spaces|min:4',
             'position' => 'required',
-            'sex' => 'required|in:Male,Female',
+            'gender' => 'required|in:Male,Female',
             'cidno' => 'required|digits:11|unique:staffs,cidno,'.$staff->id,
             'phone' => 'digits:8',
             'fax' => 'digits:8'
         );
 
         $customMessages = array(
-           'cidno.required' => 'The CID Number field is required.'
+           'cidno.required' => 'The CID Number field is required.',
+           'alpha_spaces'     => 'The :attribute may only contain letters.',
         );
         // Validate the inputs
         $validator = Validator::make(Input::all(), $rules, $customMessages);
@@ -237,7 +247,7 @@ class AdminStaffsController extends AdminController {
             $staff->title = Input::get('title');
             $staff->name = Input::get('name');
             $staff->position = Input::get('position');
-            $staff->sex = Input::get('sex');
+            $staff->gender = Input::get('gender');
             $staff->cidno = Input::get('cidno');
             
             $department_id = Input::get('department_id');
@@ -345,7 +355,7 @@ class AdminStaffsController extends AdminController {
     public function getData($department=null)
     {
         $staffs = Staff::leftJoin('departments', 'staffs.department_id', '=', 'departments.id')
-            ->select(array('staffs.id','staffs.staff_id', 'staffs.position', DB::raw('CONCAT(staffs.title,\'. \',staffs.name)'), 'staffs.sex','departments.department_name', 'staffs.id as course_no', 'staffs.id as actions'))
+            ->select(array('staffs.id','staffs.staff_id', 'staffs.position', DB::raw('CONCAT(staffs.title,\'. \',staffs.name)'), 'staffs.gender','departments.department_name', 'staffs.id as course_no', 'staffs.id as actions'))
             ->orderBy('department_id')
             ->orderBy('name')
             ->where(function($query) use ($department) {

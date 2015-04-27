@@ -3,7 +3,7 @@
 return array(
 
 	'account_management'    => 'Student Fees Management',
-	'student_update'        => 'Update a Student',
+	'fee_update'        => 'Update Student\'s Fee',
 	'add_a_new_student' => 'Add a new Student',
 	'student_delete'        => 'Delete a Student',
 	'student_view' => 'View a Student'

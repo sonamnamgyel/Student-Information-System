@@ -5,7 +5,7 @@ return array(
 	'slno' => 'Sl No',
 	'staff_id' => 'Staff ID',
 	'name' => 'Name',
-	'sex' => 'Sex',
+	'gender' => 'Gender',
 	'position' => 'Position',
 	'department' => 'Department',
 	'phone' => 'Phone No',
